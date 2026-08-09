@@ -14,11 +14,12 @@ CHIP PC {
     OUT out[16];
     
     PARTS:
-    Register(in=in , load=load , out=out1 );
+    Register(in=in, load=load, out=out1);
     Inc16(in=outf , out=out2 );
-    Mux16(a=out2, b=out1, sel=load, out=out3);
-    Register(in=out3 , load=inc , out=out, out=outf );
-
-   
-
+    Register(in=out2 , load=inc , out=out3 );
+    DFF(in=load , out=load2 );
+    Mux16(a=out3 , b=out1 , sel=load2 , out=out5 );
+    Xor16(a=in, b=in, out=out4);
+    DFF(in=reset, out=reset2);
+    Mux16(a=out5, b=out4, sel=reset2, out=outf, out=out);
 }
